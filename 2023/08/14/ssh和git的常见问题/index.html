@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
+  <title>ssh和git的常见问题 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="Hexo">
+  <meta name="description" content="ssh和git的常见问题 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="ssh和git的常见问题ssh添加密钥# 私钥的权限设置 chmod 600 .&#x2F;.ssh&#x2F;id_rsa # 添加密钥 ssh-add .&#x2F;.ssh&#x2F;id_rsa  测试ssh密钥的连接能测试私钥能否连接github ssh -T git@github.com">
 <meta property="og:type" content="article">
@@ -56,7 +56,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -274,12 +274,45 @@
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-ssh和git的常见问题" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9C%E5%BF%97%E6%A2%A6%E8%BE%B9"><span class="toc-text">远志梦边</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E7%AC%94%E8%AE%B0"><span class="toc-text">随笔记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9C%E8%BF%9C%E5%BF%97%E6%A2%A6%E8%BE%B9%E2%80%9D%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AE%B0%E5%BD%95"><span class="toc-text">“远志梦边”简单的数据记录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0"><span class="toc-text">博客平台</span></a></li></ol></li></ol>
+        <h1 class="article-title">ssh和git的常见问题</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-08-14 21:34:47'>2023-08-14 21:34</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:52</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssh%E5%92%8Cgit%E7%9A%84%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-text">ssh和git的常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh%E6%B7%BB%E5%8A%A0%E5%AF%86%E9%92%A5"><span class="toc-text">ssh添加密钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95ssh%E5%AF%86%E9%92%A5%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="toc-text">测试ssh密钥的连接</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -292,19 +325,50 @@
     }
 </style>
 </div>
-            <h1 id="远志梦边"><a href="#远志梦边" class="headerlink" title="远志梦边"></a>远志梦边</h1><h2 id="随笔记"><a href="#随笔记" class="headerlink" title="随笔记"></a>随笔记</h2><p>到现在都不算个喜欢写博客的人，表达能力确实太弱了，希望通过坚持写博客这件事来锻炼自己</p>
-<p>“远志梦边”这个站可能更多地去记录自己学到的知识，偶尔会有一些想法，但感觉不会太多，被认识的人看到总有些羞愧之感。</p>
-<h2 id="“远志梦边”简单的数据记录"><a href="#“远志梦边”简单的数据记录" class="headerlink" title="“远志梦边”简单的数据记录"></a>“远志梦边”简单的数据记录</h2><p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
-<p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
-<h2 id="博客平台"><a href="#博客平台" class="headerlink" title="博客平台"></a>博客平台</h2><p>这个博客通过 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 生成，部署在 <a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>主题 <a target="_blank" rel="noopener" href="https://github.com/yelog/hexo-theme-3-hexo">3-hexo</a> 已经在github上开源</p>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ssh和git的常见问题"><a href="#ssh和git的常见问题" class="headerlink" title="ssh和git的常见问题"></a>ssh和git的常见问题</h1><h2 id="ssh添加密钥"><a href="#ssh添加密钥" class="headerlink" title="ssh添加密钥"></a>ssh添加密钥</h2><pre><code class="bash"># 私钥的权限设置
+chmod 600 ./.ssh/id_rsa
+# 添加密钥
+ssh-add ./.ssh/id_rsa
+</code></pre>
+<h2 id="测试ssh密钥的连接"><a href="#测试ssh密钥的连接" class="headerlink" title="测试ssh密钥的连接"></a>测试ssh密钥的连接</h2><p>能测试私钥能否连接github</p>
+<pre><code class="bash">ssh -T git@github.com
+</code></pre>
 
-        </article>
-        
-        <p>
-            <a  class="dashang" onclick="dashangToggle()">赏</a>
-        </p>
-        
-        
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 x19511603116@163.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>ssh和git的常见问题</p>
+    <p><span class="copy-title">字数:</span><span class="post-count">52</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="yu4n2h1">yu4n2h1</a></p>
+    <p><span class="copy-title">发布时间:</span>2023-08-14, 21:34:40</p>
+    <p><span class="copy-title">最后更新:</span>2023-08-14, 21:34:47</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/08/14/ssh%E5%92%8Cgit%E7%9A%84%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="ssh和git的常见问题">http://example.com/2023/08/14/ssh%E5%92%8Cgit%E7%9A%84%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -313,11 +377,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 <div class="hide_box" onclick="dashangToggle()"></div>
