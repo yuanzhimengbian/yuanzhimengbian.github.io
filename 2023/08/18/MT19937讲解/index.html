@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MT19937讲解 | Hexo</title>
+  <meta name="keywords" content=" MT19937 , 伪随机数 ">
+  <meta name="description" content="MT19937讲解 | Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/archives/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="yu4n2h1">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>yu4n2h1</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+            <a title="github"
+               href="https://github.com/yuanzhimengbian"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:x19511603116@163.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1819365250&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(3)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="Crypto">
+                        
+                        Crypto
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="wsl折腾之路">
+                        
+                        wsl折腾之路
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="其他">
+                        
+                        其他
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">关于</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">友链</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="3">
+<input type="hidden" id="yelog_site_word_count" value="3.2k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>3-hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>伪随机数</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>MT19937</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ssh</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="全部文章 Crypto "
+           href="/2023/08/18/MT19937%E8%AE%B2%E8%A7%A3/"
+           data-tag="MT19937,伪随机数"
+           data-author="" >
+            <span class="post-title" title="MT19937讲解">MT19937讲解</span>
+            <span class="post-date" title="2023-08-18 16:42:27">2023/08/18</span>
+        </a>
+        
+        <a  class="全部文章 其他 "
+           href="/2023/08/14/ssh%E5%92%8Cgit%E7%9A%84%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/"
+           data-tag="ssh,git"
+           data-author="" >
+            <span class="post-title" title="ssh和git的常见问题">ssh和git的常见问题</span>
+            <span class="post-date" title="2023-08-14 21:34:40">2023/08/14</span>
+        </a>
+        
+        <a  class="全部文章 wsl折腾之路 "
+           href="/2023/08/14/hexo%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/"
+           data-tag="hexo,3-hexo"
+           data-author="" >
+            <span class="post-title" title="hexo配置笔记">hexo配置笔记</span>
+            <span class="post-date" title="2023-08-14 21:20:28">2023/08/14</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-MT19937讲解" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MT19937讲解</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="Crypto">Crypto</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color3">MT19937</a>
+            
+            <a class="color5">伪随机数</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-08-18 16:44:22'>2023-08-18 16:42</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:2.7k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MT19937%E8%AE%B2%E8%A7%A3"><span class="toc-text">MT19937讲解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95"><span class="toc-text">梅森旋转算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%AA%E9%9A%8F%E6%9C%BA%E7%A7%8D%E5%AD%90%E7%9A%84%E7%94%9F%E6%88%90"><span class="toc-text">伪随机种子的生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%86%E5%90%91%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BA%A7%E7%94%9F%E7%9A%84%E7%AE%97%E6%B3%95-extract-number"><span class="toc-text">逆向随机数产生的算法(extract_number)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E6%B5%8B%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0"><span class="toc-text">预测伪随机数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E9%A2%84%E6%B5%8B%EF%BC%88%E9%80%86%E5%90%91-twist%EF%BC%89"><span class="toc-text">前向预测（逆向 twist）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84%E8%BF%9B%E8%A1%8C%E9%A2%84%E6%B5%8B"><span class="toc-text">通过线性方程组进行预测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%90%91%E6%A8%A1%E6%8B%9F-MT19937-%E8%BF%87%E7%A8%8B"><span class="toc-text">正向模拟 MT19937 过程</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="MT19937讲解"><a href="#MT19937讲解" class="headerlink" title="MT19937讲解"></a>MT19937讲解</h1><p>最近出了几道攻击点在伪随机序列的题目，尝试出题下来发现对整体的 MT19937 的原理还是不够了解，写下本文加深对 MT19937 算法和对其攻击的理解。</p>
+<h2 id="梅森旋转算法"><a href="#梅森旋转算法" class="headerlink" title="梅森旋转算法"></a>梅森旋转算法</h2><p>先放上 wiki <a href="%22https://zh.wikipedia.org/zh-cn/%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95%22">梅森旋转算法</a></p>
+<p>wiki 中给的 python 代码为：</p>
+<pre><code class="python">def _int32(x):
+    return int(0xFFFFFFFF &amp; x)
+
+class MT19937:
+    def __init__(self, seed):
+        self.mt = [0] * 624
+        self.mt[0] = seed
+        self.mti = 0
+        for i in range(1, 624):
+            self.mt[i] = _int32(1812433253 * (self.mt[i - 1] ^ self.mt[i - 1] &gt;&gt; 30) + i)
+
+
+    def extract_number(self):
+        if self.mti == 0:
+            self.twist()
+        y = self.mt[self.mti]
+        y = y ^ y &gt;&gt; 11
+        y = y ^ y &lt;&lt; 7 &amp; 2636928640
+        y = y ^ y &lt;&lt; 15 &amp; 4022730752
+        y = y ^ y &gt;&gt; 18
+        self.mti = (self.mti + 1) % 624
+        return _int32(y)
+
+
+    def twist(self):
+        for i in range(0, 624):
+            y = _int32((self.mt[i] &amp; 0x80000000) + (self.mt[(i + 1) % 624] &amp; 0x7fffffff))
+            self.mt[i] = (y &gt;&gt; 1) ^ self.mt[(i + 397) % 624]
+
+            if y % 2 != 0:
+                self.mt[i] = self.mt[i] ^ 0x9908b0df
+</code></pre>
+<p>python 中具体实现可以见 <a target="_blank" rel="noopener" href="https://github.com/python/cpython/blob/main/Modules/_randommodule.c">c 文件</a>的第 488 行到第 557 行，不过 python 中的 <a target="_blank" rel="noopener" href="https://github.com/python/cpython/blob/main/Lib/random.py">py 文件</a>第 40 到第 45 行的注释已经说明了 python 中随机数的实现原理。</p>
+<p>整体的随机数的实现分为四个过程（大部分是 c 文件中实现的）</p>
+<ol>
+<li>前置的种子生成算法（是 py 文件中的）</li>
+<li>由随机种子初始化寄存器状态</li>
+<li>变换伪随机数发生器的状态</li>
+<li>由伪随机数发生器的状态产生伪随机数</li>
+</ol>
+<p>python 中 getstate 返回寄存器状态，返回值为 625 位，前 624 位为实际 MT19937 寄存器的状态，而最后 1 位则是当前寄存器产生伪随机数使用哪个寄存器。当最后一位为 0 时，寄存器状态进行变换，并加 1。也就是说这一位在 getstate 中不会出现 0。</p>
+<h2 id="伪随机种子的生成"><a href="#伪随机种子的生成" class="headerlink" title="伪随机种子的生成"></a>伪随机种子的生成</h2><blockquote>
+<p>要稍微注意一下 python 随机数中种子的生成算法</p>
+</blockquote>
+<pre><code class="python">    def seed(self, a=None, version=2):
+        &quot;&quot;&quot;Initialize internal state from a seed.
+
+        The only supported seed types are None, int, float,
+        str, bytes, and bytearray.
+
+        None or no argument seeds from current time or from an operating
+        system specific randomness source if available.
+
+        If *a* is an int, all bits are used.
+
+        For version 2 (the default), all of the bits are used if *a* is a str,
+        bytes, or bytearray.  For version 1 (provided for reproducing random
+        sequences from older versions of Python), the algorithm for str and
+        bytes generates a narrower range of seeds.
+
+        &quot;&quot;&quot;
+
+        if version == 1 and isinstance(a, (str, bytes)):
+            a = a.decode(&#39;latin-1&#39;) if isinstance(a, bytes) else a
+            x = ord(a[0]) &lt;&lt; 7 if a else 0
+            for c in map(ord, a):
+                x = ((1000003 * x) ^ c) &amp; 0xFFFFFFFFFFFFFFFF
+            x ^= len(a)
+            a = -2 if x == -1 else x
+
+        elif version == 2 and isinstance(a, (str, bytes, bytearray)):
+            if isinstance(a, str):
+                a = a.encode()
+            a = int.from_bytes(a + _sha512(a).digest(), &#39;big&#39;)
+
+        elif not isinstance(a, (type(None), int, float, str, bytes, bytearray)):
+            _warn(&#39;Seeding based on hashing is deprecated\n&#39;
+                  &#39;since Python 3.9 and will be removed in a subsequent &#39;
+                  &#39;version. The only \n&#39;
+                  &#39;supported seed types are: None, &#39;
+                  &#39;int, float, str, bytes, and bytearray.&#39;,
+                  DeprecationWarning, 2)
+
+        super().seed(a)
+        self.gauss_next = None
+</code></pre>
+<p>种子的生成算法一共有两个版本，为不同的两个 hash 算法，但是两个版本的算法都在一定条件下不可逆，所以不能通过 MT19937 算法的种子推测 python 中输入的种子。</p>
+<p>在种子生成算法中包含两个种子，一个是在调用 python 函数时实际使用的种子，另一个则是 MT19937 实际使用的种子。要注意两个种子的值并不一致。</p>
+<p>种子的生成算法一共有两个版本，一个版本调用了线性的 sha512 库，安全性是经过公开验证的，另一个则是自己实现了一个 hash 算法，理论上在条件约束充足的情况下可以反推，实际上由于每轮的信息丢失，实际也不能反推。</p>
+<h2 id="逆向随机数产生的算法-extract-number"><a href="#逆向随机数产生的算法-extract-number" class="headerlink" title="逆向随机数产生的算法(extract_number)"></a>逆向随机数产生的算法(extract_number)</h2><pre><code class="python">def extract_number(self):
+    if self.mti == 0:
+        self.twist()
+    y = self.mt[self.mti]
+    y = y ^ y &gt;&gt; 11
+    y = y ^ y &lt;&lt; 7 &amp; 2636928640
+    y = y ^ y &lt;&lt; 15 &amp; 4022730752
+    y = y ^ y &gt;&gt; 18
+    self.mti = (self.mti + 1) % 624
+    return _int32(y)
+</code></pre>
+<pre><code class="python">def _int32(x):
+    return int(0xFFFFFFFF &amp; x)
+</code></pre>
+<p>首先说明一下_int32 这个算法等价于模 $2^{32}$ 取余，是为了保证结果在 32 位之中。对应到过程中，就是计算过程中的所有高于 32 位的数位都可以舍去。</p>
+<p>对于式子 <code>y = y ^ y &gt;&gt; 18</code>​，相当于 <code>y</code> ​和 <code>y</code> ​的高 14 位进行异或逆向过程也是异或 <code>y</code> ​和 <code>y</code> ​的高 14 位，即 <code>y ^ y &gt;&gt; 18</code>​</p>
+<p>而对于式子 <code>y = y ^ y &lt;&lt; 15 &amp; 4022730752</code>​，则是每次运算过程中都添加了一个掩码，逆向过程也是通过没有变的数位进行推解，结果中的低 15 位是确定且和初始值一致的，通过 <code>w = y ^ y &gt;&gt; 15 &amp; 4022730752</code> ​获得还原好的低 30 位，然后运行 <code>w = w ^ y &gt;&gt; 15 &amp; 4022730752</code> ​获得最后两位。</p>
+<p>extract_number 中的数值的逆向过程如下所示：</p>
+<pre><code class="python">def inverse_extract_number(y:int):
+    y = y ^ y &gt;&gt; 18
+    print(y)
+    y = y ^ ((y &lt;&lt; 15 &amp; 4022730752) &amp; ((1&lt;&lt; 15) - 1)&lt;&lt; 15)
+    y = y ^ ((y &lt;&lt; 15 &amp; 4022730752) &amp; ((1&lt;&lt; 15) - 1)&lt;&lt; 30)
+    y = y &amp; 0xffffffff
+  
+    print(y)
+    y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt; 7)
+    y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt;14)
+    y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt;21)
+    y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt;28)
+    y = y &amp; 0xffffffff
+  
+    y = y ^ ((y &gt;&gt; 11) &amp; ((1&lt;&lt;11)-1) &lt;&lt; 10)
+    y = y ^ ((y &gt;&gt; 11) &amp; ((1&lt;&lt;11)-1) &gt;&gt; 1)
+    return y
+</code></pre>
+<p>ppt 里讲一下这个过程 <code>y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt; 7)</code>​</p>
+<h2 id="预测伪随机数"><a href="#预测伪随机数" class="headerlink" title="预测伪随机数"></a>预测伪随机数</h2><p>预测伪随机数和逆向 <code>extract_number</code> ​过程相差无几，由于从头产生 624 个伪随机数，逆向这 624 个伪随机数，并将其填入对应寄存器，即可通过寄存器产生预测其后的状态。</p>
+<pre><code class="python">def inverse_extract_number(y:int):
+    y = y ^ y &gt;&gt; 18
+   
+    y = y ^ ((y &lt;&lt; 15 &amp; 4022730752) &amp; ((1&lt;&lt; 15) - 1)&lt;&lt; 15)
+    y = y ^ ((y &lt;&lt; 15 &amp; 4022730752) &amp; ((1&lt;&lt; 15) - 1)&lt;&lt; 30)
+    y = y &amp; 0xffffffff
+  
+  
+    y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt; 7)
+    y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt;14)
+    y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt;21)
+    y = y ^ ((y &lt;&lt; 7 &amp; 2636928640) &amp; ((1&lt;&lt; 7) - 1)&lt;&lt;28)
+    y = y &amp; 0xffffffff
+  
+    y = y ^ ((y &gt;&gt; 11) &amp; ((1&lt;&lt;11)-1) &lt;&lt; 10)
+    y = y ^ ((y &gt;&gt; 11) &amp; ((1&lt;&lt;11)-1) &gt;&gt; 1)
+    return y
+
+prngs = [...]
+state = []
+for i in range(624):
+    state.append(inverse_extract_number(prngs[i]))
+state.append(0)
+state = (3,tuple(state),None)
+Random.setstate(state)
+</code></pre>
+<p>这样就能伪随机数发生器的状态还原到刚用种子初始化完成的状态中。</p>
+<h2 id="前向预测（逆向-twist）"><a href="#前向预测（逆向-twist）" class="headerlink" title="前向预测（逆向 twist）"></a>前向预测（逆向 twist）</h2><pre><code class="python">def twist(self):
+    for i in range(0, 624):
+        y = _int32((self.mt[i] &amp; 0x80000000) + (self.mt[(i + 1) % 624] &amp; 0x7fffffff))
+        self.mt[i] = (y &gt;&gt; 1) ^ self.mt[(i + 397) % 624]
+
+        if y % 2 != 0:
+            self.mt[i] = self.mt[i] ^ 0x9908b0df
+</code></pre>
+<p><code>self.mt[i]</code> ​相当于 <code>(y&gt;&gt;1) ^ self.mt[(i + 397) % 624] ^ 0x9908b0df</code> ​或者 <code>(y&gt;&gt;1) ^ self.mt[(i + 397) % 624]</code>​，在逆向过程中可以先进行 <code>res ^ self.mt[(i + 397) % 624]</code> ​还原出 <code>(y&gt;&gt;1) ^ 0x9908b0df</code> ​或 <code>y&gt;&gt;1</code>​，然后反倒可以通过最高位师傅是 1 来确定是两者中的哪一个，最后还原 <code>y</code>​。<code>y</code> ​又是 <code>sekf.mt[i]</code> ​最高位和 <code>self.mt[i+1]</code> ​其余位的组合，所以可以还原出 <code>self.mt[i+1]</code> ​的非最高位。</p>
+<pre><code class="python">def inverse_twist(state:list[int]):
+    # res = [0 for i in range(len(state))]
+    for i in range(623,-1,-1):
+        y = state[i] ^ state[(i + 397) % 624]
+        if y &amp; 0x80000000:
+            y = y ^ 0x9908b0df
+        y = (y &lt;&lt; 1) | 1
+        state[(i + 1) % 624] = (state[(i + 1) % 624] &amp; 0x80000000) + (y &amp; 0x7fffffff)
+        state[i % 624] = (state[i % 624] &amp; 0x7fffffff) + (y &amp; 0x80000000)
+      
+    return state
+</code></pre>
+<h2 id="通过线性方程组进行预测"><a href="#通过线性方程组进行预测" class="headerlink" title="通过线性方程组进行预测"></a>通过线性方程组进行预测</h2><p>记 MT19937 寄存器所有值的状态为 $x_0,x_1\dots ,x_{19967}$，分析其中的 <code>extract_number</code> ​和 <code>twist</code>​，发现可以全部看作寄存器状态值的线性组合，所以整个 MT19937 的伪随机数发生器，都可以写成矩阵相乘的形式。</p>
+<h2 id="正向模拟-MT19937-过程"><a href="#正向模拟-MT19937-过程" class="headerlink" title="正向模拟 MT19937 过程"></a>正向模拟 MT19937 过程</h2><blockquote>
+<p>要解释一下为什么可以通过矩阵模拟，并且要写出矩阵模拟过程中几个比较关键的点：检测当前状态也可以使用逻辑运算代替，twist 中有假的加法过程，可以直接使用“或”来代替</p>
+</blockquote>
+<pre><code class="python">class Mt:
+    &quot;&quot;&quot;保证第0位对应数值的最低位，第32位对应数值的&quot;&quot;&quot;
+    def __init__(self, num) -&gt; None:
+        self.length = 32
+        if isinstance(num ,int):
+            self.mt = [Mod(1,2) if (1&lt;&lt;i) &amp; num else Mod(0,2) for i in range(32)]
+          
+        elif isinstance(num ,(list,tuple)):
+            self.mt = [num[x] for x in range(32)]
+
+        elif isinstance(num, Mt):
+            self.mt = num.mt
+
+    def __and__(self, other):
+        res = [0 for i in range(624)]
+        for i in range(self.length):
+            res[i] = self.mt[i] * other.mt[i]
+        return Mt(res)
+  
+    def __xor__(self, other):
+        res = [0 for i in range(624)]
+        for i in range(self.length):
+            res[i] = self.mt[i] + other.mt[i]
+        return Mt(res)
+  
+    def __rmul__(self, other):
+        res = [0 for i in range(624)]
+        for i in range(self.length):
+            res[i] = other * self.mt[i]
+        return Mt(res)
+  
+    def __lshift__(self, other):
+        &quot;&quot;&quot;为向高位移动&quot;&quot;&quot;
+        res = [0 for i in range(624)]
+        for i in range(self.length-1,other-1,-1):
+            res[i] = self.mt[i - other]
+        return Mt(res)
+  
+    def __rshift__(self, other):
+        &quot;&quot;&quot;向低位移动&quot;&quot;&quot;
+        res = [0 for i in range(624)]
+        for i in range(self.length - other):
+            res[i] = self.mt[i+other]
+        return Mt(res)
+
+    def to_num(self):
+        if isinstance(self.mt[0],(int,sage.rings.finite_rings.integer_mod.IntegerMod_int)):
+            res = 0
+            for i in range(32):
+                # if self.mt[i]:
+                res += self.mt[i] &lt;&lt; i
+            return res
+        return None
+  
+    def __repr__(self) -&gt; str:
+        return &quot;Mt&quot;+str(self.mt)
+
+    def __str__(self) -&gt; str:
+        return &quot;Mt&quot;+str(self.mt)
+</code></pre>
+<p>首先写一个 Mt 类模拟整数的位运算，方便之后对 MT19937 的模拟。</p>
+<pre><code class="python">class VactorMT19937:
+    def __init__(self, state):
+        self.mt = [Mt(x) for x in state]
+        self.mti = 0
+
+    def extract_number(self):
+        # if self.mti == 0:
+            # self.twist()
+
+        y = self.mt[self.mti]
+        # print(y &gt;&gt; 11)
+        y = y ^ y &gt;&gt; 11
+        y = y ^ y &lt;&lt; 7 &amp; Mt(2636928640)
+        y = y ^ y &lt;&lt; 15 &amp; Mt(4022730752)
+        y = y ^ y &gt;&gt; 18
+        self.mti = (self.mti + 1) % 624
+        return y
+
+    def twist(self):
+        for i in range(0, 624):
+            y = (self.mt[i] &amp; Mt(0x80000000)) ^ (
+                self.mt[(i + 1) % 624] &amp; Mt(0x7FFFFFFF)
+            )
+            self.mt[i] = (y &gt;&gt; 1) ^ self.mt[(i + 397) % 624]
+
+            &quot;&quot;&quot;
+            等价于
+            if y % 2 != 0:
+                self.mt[i] = self.mt[i] ^ Mt(0x9908b0df)
+            &quot;&quot;&quot;
+            self.mt[i] = self.mt[i] ^ (y.mt[0] * Mt(0x9908B0DF))
+</code></pre>
+<p>在模拟中将所有数字都转换成 Mt 格式的数据</p>
+<p>模拟中有个问题需要注意<br>原来是条件是</p>
+<pre><code class="python">if y % 2 != 0:
+     self.mt[i] = self.mt[i] ^ Mt(0x9908b0df)
+</code></pre>
+<p>条件相当于检测最后一比特是否为 1，若为 1，则在一个 Mt 的 32 位比特中则需要对应加上 0x9908B0DF。</p>
+<p>翻译过来则是</p>
+<pre><code class="python">self.mt[i] = self.mt[i] ^ (y.mt[0] * Mt(0x9908B0DF))
+</code></pre>
+<p>‍</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 x19511603116@163.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>MT19937讲解</p>
+    <p><span class="copy-title">字数:</span><span class="post-count">2.7k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="yu4n2h1">yu4n2h1</a></p>
+    <p><span class="copy-title">发布时间:</span>2023-08-18, 16:42:27</p>
+    <p><span class="copy-title">最后更新:</span>2023-08-18, 16:44:22</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/08/18/MT19937%E8%AE%B2%E8%A7%A3/" title="MT19937讲解">http://example.com/2023/08/18/MT19937%E8%AE%B2%E8%A7%A3/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
